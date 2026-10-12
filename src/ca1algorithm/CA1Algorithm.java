@@ -6,6 +6,7 @@ package ca1algorithm;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Scanner;
 
 /**
  *
@@ -30,7 +31,7 @@ public class CA1Algorithm {
     }
     
     static class FoodQueue {
-        //Stack
+        //Circula Queue
     private FoodItem[] queue;
     private int front;
     private int rear;
@@ -38,6 +39,8 @@ public class CA1Algorithm {
     private int count;
     
     public FoodQueue(int queueCapacity) {
+        
+    capacity = queueCapacity;
     queue = new FoodItem[capacity];
     front = -1;
     rear = -1;
@@ -110,7 +113,7 @@ public class CA1Algorithm {
             System.out.println("Storage is empty!");
         }else {
             int i = front;
-            for (int j = 0; j < count; j++); {
+            for (int j = 0; j < count; j++) {
                 if (queue[i].name.equalsIgnoreCase(foodName)) {
                 System.out.println(foodName + " found in storage");
                 return;
@@ -120,12 +123,75 @@ public class CA1Algorithm {
             System.out.println(foodName + " not found in storage");
         }
     }
-            }
+    }      
     
     
     
     public static void main(String[] args) {
         // Principal Menu
-    }
     
-}
+        Scanner input = new Scanner (System.in);
+        FoodQueue storage = new FoodQueue(8);
+        int choose;
+        
+        do {
+        System.out.println("Food Storage System");
+            System.out.println("1. Add food");
+            System.out.println("2. Remove food");
+            System.out.println("3. Peek first food");
+            System.out.println("4. Display all food");
+            System.out.println("5. Search food");
+            System.out.println("6. Exit");
+            System.out.println("Choose an option: ");
+            
+            choose = input.nextInt();
+            
+        switch (choose) {
+            case 1:
+                input.nextLine();
+                System.out.println("Enter food name: ");
+                String name = input.nextLine();
+                System.out.println("Enter food weight in grams: ");
+                double weight = input.nextDouble();
+                System.out.println("Enter best before date (YYYY-MM-DD");
+                String dateInput = input.next();
+                LocalDate bestBefore = LocalDate.parse(dateInput);
+                LocalDateTime placedTime = LocalDateTime.now();
+                
+                FoodItem item = new FoodItem(name, weight, bestBefore, placedTime);
+                storage.add(item);
+                break;
+                
+            case 2:
+                storage.remove();
+                break;
+                
+            case 3:
+                storage.peek();
+                break;
+                
+            case 4:
+                storage.display();
+                break;
+                
+            case 5:
+                System.out.println("Enter food name to search");
+                input.nextLine();
+                String foodName = input.nextLine();
+                storage.search(foodName);
+                break;
+                
+            case 6:
+                System.out.println("Exit");
+                break;
+                
+            default: 
+                System.out.println("Invalid Option! Choose 1 to 6");
+        }
+       
+        }   while  (choose != 6);
+        
+        input.close();
+    }
+    }
+  
