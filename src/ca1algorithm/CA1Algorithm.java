@@ -131,7 +131,11 @@ public class CA1Algorithm {
         // Principal Menu
     
         Scanner input = new Scanner (System.in);
-        FoodQueue storage = new FoodQueue(8);
+        System.out.print("Enter queue size: ");
+        int size = input.nextInt();
+
+        FoodQueue queue = new FoodQueue(size);
+        
         int choose;
         
         do {
@@ -159,26 +163,26 @@ public class CA1Algorithm {
                 LocalDateTime placedTime = LocalDateTime.now();
                 
                 FoodItem item = new FoodItem(name, weight, bestBefore, placedTime);
-                storage.add(item);
+                queue.add(item);
                 break;
                 
             case 2:
-                storage.remove();
+                queue.remove();
                 break;
                 
             case 3:
-                storage.peek();
+                queue.peek();
                 break;
                 
             case 4:
-                storage.display();
+                queue.display();
                 break;
                 
             case 5:
                 System.out.println("Enter food name to search");
                 input.nextLine();
                 String foodName = input.nextLine();
-                storage.search(foodName);
+                queue.search(foodName);
                 break;
                 
             case 6:
