@@ -131,8 +131,22 @@ public class CA1Algorithm {
         // Principal Menu
     
         Scanner input = new Scanner (System.in);
-        System.out.print("Enter queue size: ");
-        int size = input.nextInt();
+        int size = 0;
+
+        while (size <= 0) {
+             System.out.print("Enter queue size: ");
+
+        try {
+        size = Integer.parseInt(input.nextLine());
+
+        if (size <= 0) {
+            System.out.println("Queue size must be greater than 0.");
+        }
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Enter a positive whole number.");
+        }
+        }
 
         FoodQueue queue = new FoodQueue(size);
         
@@ -159,18 +173,57 @@ public class CA1Algorithm {
             
         switch (choose) {
             case 1:
-                input.nextLine();
                 System.out.println("Enter food name: ");
-                String name = input.nextLine();
+                String foodName = input.nextLine();
+                if (!foodName.matches("[a-zA-Z]+( [a-zA-Z]+)*")) {
+                    System.out.println("Food name must contain lettes and space only.");
+                    break;
+                }
+                
                 System.out.println("Enter food weight in grams: ");
-                double weight = input.nextDouble();
-                System.out.println("Enter best before date (YYYY-MM-DD");
-                String dateInput = input.next();
-                LocalDate bestBefore = LocalDate.parse(dateInput);
+                double foodWeight;
+                try {
+                    foodWeight = Double.parseDouble(input.nextLine());
+                    
+                    if (foodWeight <= 0) {
+                    System.out.println("Food weight must be greater than 0.");
+                    break;
+                }
+                
+                
+                }catch (NumberFormatException e) {
+                    System.out.println("Invalid weight. Enter a number.");
+                    break;
+                }
+                
+                System.out.println("Enter best before date (YYYY-MM-DD)");
+                String dateInput = input.nextLine();
+                LocalDate bestBefore;
+                
+                try {
+                    bestBefore = LocalDate.parse(dateInput);
+                } catch (java.time.format.DateTimeParseException e) {
+                    System.out.println("Invalid date. Use YYYY-MM-DD.");
+                    break;             
+                }
+                
+                LocalDate today = LocalDate.now();
+                LocalDate maxBestBefore = today.plusWeeks(2);
+                
+                if (bestBefore.isBefore(today)) {
+                    System.out.println("Best before can not be in the past.");
+                    break;
+                }
+                
+                if (bestBefore.isAfter(maxBestBefore)) {
+                    System.out.println("Best before can not be more than two weeks.");
+                    break;
+                }
+                
                 LocalDateTime placedTime = LocalDateTime.now();
                 
-                FoodItem item = new FoodItem(name, weight, bestBefore, placedTime);
-                queue.add(item);
+                FoodItem food = new FoodItem (foodName, foodWeight, bestBefore, placedTime);
+                queue.add(food);
                 break;
                 
             case 2:
@@ -187,9 +240,8 @@ public class CA1Algorithm {
                 
             case 5:
                 System.out.println("Enter food name to search");
-                input.nextLine();
-                String foodName = input.nextLine();
-                queue.search(foodName);
+                String searchFood = input.nextLine();
+                queue.search(searchFood);
                 break;
                 
             case 6:
