@@ -146,9 +146,16 @@ public class CA1Algorithm {
             System.out.println("4. Display all food");
             System.out.println("5. Search food");
             System.out.println("6. Exit");
-            System.out.println("Choose an option: ");
+           
             
-            choose = input.nextInt();
+              try {
+                System.out.println("Choose an option: ");
+                choose = Integer.parseInt(input.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid option. Enter a number.");
+                choose=0;
+                continue;
+            }
             
         switch (choose) {
             case 1:
