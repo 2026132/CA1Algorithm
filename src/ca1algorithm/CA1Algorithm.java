@@ -6,6 +6,7 @@ package ca1algorithm;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 /**
@@ -91,7 +92,7 @@ public class CA1Algorithm {
         if (isEmpty()) {
             System.out.println("Storage is empty!");
         }else {
-            System.out.println("First food items is " + queue[front].name);
+            System.out.println("First food item (front) is " + queue[front].name);
         }
     }
     
@@ -102,9 +103,15 @@ public class CA1Algorithm {
             System.out.println("Food items in storage: ");
             int i = front;            
             for (int j = 0; j < count; j++) {
-                System.out.println(queue[i].name);
+                
+                System.out.println("== " + queue[i].name + " ==");
+                System.out.println("  *Weight: " + queue[i].weight + " grams");
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+                System.out.println("  *Best-before: " + queue[i].bestBefore.format(dateFormatter));
+                System.out.println("  *Placed time: " + queue[i].placedTime.format(formatter));
                 i = (i + 1) % capacity;
-            }
+                            }
         }
     } 
     
@@ -133,7 +140,7 @@ public class CA1Algorithm {
         Scanner input = new Scanner (System.in);
         int size = 0;
 
-        while (size <= 0) {
+        while (size <= 0 || size > 8) {
              System.out.print("Enter queue size: ");
 
         try {
@@ -142,9 +149,13 @@ public class CA1Algorithm {
         if (size <= 0) {
             System.out.println("Queue size must be greater than 0.");
         }
-
-        } catch (NumberFormatException e) {
+        else if (size >8) {
+            System.out.println("Queue size can not be greater than 8.");
+        }
+        
+            } catch (NumberFormatException e) {
             System.out.println("Invalid input. Enter a positive whole number.");
+            size=0;
         }
         }
 
@@ -196,14 +207,15 @@ public class CA1Algorithm {
                     break;
                 }
                 
-                System.out.println("Enter best before date (YYYY-MM-DD)");
+                System.out.println("Enter best before date (DD/MM/YYYY)");
                 String dateInput = input.nextLine();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDate bestBefore;
                 
                 try {
-                    bestBefore = LocalDate.parse(dateInput);
+                    bestBefore = LocalDate.parse(dateInput, formatter);
                 } catch (java.time.format.DateTimeParseException e) {
-                    System.out.println("Invalid date. Use YYYY-MM-DD.");
+                    System.out.println("Invalid date. Use DD/MM/YYYY.");
                     break;             
                 }
                 
@@ -257,4 +269,3 @@ public class CA1Algorithm {
         input.close();
     }
     }
-  
