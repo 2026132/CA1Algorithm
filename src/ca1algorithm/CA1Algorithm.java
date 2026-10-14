@@ -4,15 +4,16 @@
  */
 package ca1algorithm;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDate; //package required to best before product expiration information.
+import java.time.LocalDateTime; //package required to storage date information.
+import java.time.format.DateTimeFormatter;// //package required to modify the date and time format.
 import java.util.Scanner;
 
 
-public class CA1Algorithm {
+public class CA1Algorithm { 
     
-    // Start of code using Circular Queue
+    // Start of code using Circular Queue (FIFO)
+    
     static class FoodItem {
         //Food Information
         
@@ -22,7 +23,7 @@ public class CA1Algorithm {
     private LocalDateTime placedTime; // Store the date and time the food was stored
     
     public FoodItem(String itemName, double itemWeight, LocalDate itemBestBefore, LocalDateTime itemPlacedTime) {
-    name = itemName;
+    name = itemName; // Save all food information.
     weight = itemWeight;
     bestBefore = itemBestBefore;
     placedTime = itemPlacedTime;
@@ -32,10 +33,10 @@ public class CA1Algorithm {
     static class FoodQueue {
         //Circula Queue
     private FoodItem[] queue;
-    private int front;
-    private int rear;
-    private int capacity;
-    private int count;
+    private int front; // Represents the first item add to the queue.
+    private int rear; // Represents the last item add to the queue.
+    private int capacity; // Represents the capacity total of the queue.
+    private int count; // Represents how many itens have in the queue in that moment.
     
     public FoodQueue(int queueCapacity) {
         
@@ -47,30 +48,30 @@ public class CA1Algorithm {
     } 
     
     
-    public boolean isEmpty() {
+    public boolean isEmpty() { // Means the count is 0 the queue is empty.
     return count == 0;
     }
 
-    public boolean isFull() {
+    public boolean isFull() { // Means when the count equal the capacity of the queue it is full.
     return count == capacity;
     }
     
     public void add(FoodItem item){
         if (isFull()) {
-            System.out.println("Storage is Full!");
-        }else {
+            System.out.println("Storage is Full!"); //first check if full
+        }else {                                    
             if (isEmpty()) {
                 front = 0;
             }
         rear = (rear + 1) % capacity;
         queue[rear] = item;
         count++;
-            System.out.println(item.name + " added to storage");
-        }
+            System.out.println(item.name + " added to storage");// If empty add the item to the queue and update the count
+        }                                       
     }
     
-    public void remove(){
-        if (isEmpty()){
+    public void remove(){ 
+        if (isEmpty()){ // First check if empty
             System.out.println("Storage is empty!");
         }else {
             FoodItem item = queue[front];
@@ -82,23 +83,23 @@ public class CA1Algorithm {
             }else {
                 front = (front + 1) % capacity;
             }
-            System.out.println(item.name + " removed from storage.");
+            System.out.println(item.name + " removed from storage."); // Remove the first item (front) add to the queue (FIFO)
         }
     }
             
     public void peek(){
         if (isEmpty()) {
-            System.out.println("Storage is empty!");
+            System.out.println("Storage is empty!"); // First check if empty
         }else {
-            System.out.println("First food item (front) is " + queue[front].name);
+            System.out.println("First food item (front) is " + queue[front].name); // It mentions what the first element in the queue is (the first item added).
         }
     }
     
     public void display (){
         if (isEmpty()) {
-            System.out.println("Storage is empty!");
+            System.out.println("Storage is empty!"); // First check if empty
         }else {
-            System.out.println("Food items in storage: ");
+            System.out.println("Food items in storage: "); // List all the food items in the queue, in order of addition, along with their information.
             int i = front;            
             for (int j = 0; j < count; j++) {
                 
@@ -115,20 +116,20 @@ public class CA1Algorithm {
     
     public void search(String foodName) {
         if (isEmpty()) {
-            System.out.println("Storage is empty!");
+            System.out.println("Storage is empty!"); // First check if empty
         }else {
             int i = front;
             for (int j = 0; j < count; j++) {
                 if (queue[i].name.equalsIgnoreCase(foodName)) {
-                System.out.println(foodName + " found in storage");
+                System.out.println(foodName + " found in storage"); // It mentions that the item was located in the queue.
                 return;
             }
             i = (i + 1) % capacity;
         }
-            System.out.println(foodName + " not found in storage");
+            System.out.println(foodName + " not found in storage"); // Displays a message if it is not found in the queue.
         }
     }
-    }
+    } // End of code using Queue
     
     // Start of code using Stack
     static class FoodStack {
