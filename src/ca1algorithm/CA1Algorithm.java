@@ -121,7 +121,12 @@ public class CA1Algorithm {
             int i = front;
             for (int j = 0; j < count; j++) {
                 if (queue[i].name.equalsIgnoreCase(foodName)) {
-                System.out.println(foodName + " found in storage"); // It mentions that the item was located in the queue.
+                System.out.println("Item found: ** " + foodName + " **"); // It mentions that the item was located in the queue.
+                System.out.println("  *Weight: " + queue[i].weight + " grams");
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+                System.out.println("  *Best-before: " + queue[i].bestBefore.format(dateFormatter));
+                System.out.println("  *Placed time: " + queue[i].placedTime.format(formatter));
                 return;
             }
             i = (i + 1) % capacity;
@@ -208,10 +213,15 @@ public class CA1Algorithm {
         System.out.println("Storage is empty.");
         return;
     }
-
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            
         for (int i = 0; i <= top; i++) { // Iterate through the entire stack of the array from index 0 to the top.
         if (arr[i].name.equalsIgnoreCase(itemName)) {
-            System.out.println("Item found: " + arr[i].name);
+            System.out.println("Item found: ** " + arr[i].name + " **");
+            System.out.println("  *Weight: " + arr[i].weight + " grams");
+            System.out.println("  *Best-before: " + arr[i].bestBefore.format(dateFormatter));
+            System.out.println("  *Placed time: " + arr[i].placedTime.format(formatter));
             return;
         }
     }
@@ -220,8 +230,8 @@ public class CA1Algorithm {
     }
     }
 
-    
-    public static int chooseStructure(Scanner input) { // Allows the user to select which type of structure they wish to use.
+    // Allows the user to select which type of structure they wish to use.
+    public static int chooseStructure(Scanner input) { 
         int option = 0;
 
         while (option < 1 || option > 3) {
@@ -263,8 +273,8 @@ public class CA1Algorithm {
         }
 
         int size = 0;
-
-        while (size <= 0 || size > 8) { // Allows the user to define the storage capacity, set between 1 and 8, according to CA.
+        // // Allows the user to define the storage capacity, set between 1 and 8, according to CA.
+        while (size <= 0 || size > 8) { 
             System.out.print("Enter storage capacity (1-8): ");
 
         try {
