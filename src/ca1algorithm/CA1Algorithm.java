@@ -131,13 +131,13 @@ public class CA1Algorithm {
     }
     } // End of code using Queue
     
-    // Start of code using Stack
+    // Start of code using Stack (LIFO)
     static class FoodStack {
         private FoodItem[] arr;
         private int top;
         private int capacity;
 
-    public FoodStack(int stackCapacity) {
+    public FoodStack(int stackCapacity) { // Creates the stack and initializes it empty (top = -1)
         capacity = stackCapacity;
         arr = new FoodItem[capacity];
         top = -1;
@@ -151,23 +151,23 @@ public class CA1Algorithm {
         return top == capacity - 1;
     }
 
-    public void add(FoodItem item) {
+    public void add(FoodItem item) { // First check if empty
         if (isFull()) {
             System.out.println("Storage is full.");
             return;
         }
 
         arr[++top] = item;
-        System.out.println(item.name + " added to storage.");
+        System.out.println(item.name + " added to storage."); // Add item to storage
     }
 
     public FoodItem remove() {
-        if (isEmpty()) {
+        if (isEmpty()) { // First check if empty
             System.out.println("Storage is empty.");
             return null;
         }
 
-        FoodItem removed = arr[top];
+        FoodItem removed = arr[top]; // Remove the last item add to the stack
         arr[top] = null;
         top--;
 
@@ -176,26 +176,26 @@ public class CA1Algorithm {
     }
 
     public FoodItem peek() {
-        if (isEmpty()) {
+        if (isEmpty()) { // First check if empty
             System.out.println("Storage is empty.");
             return null;
         }
 
-        return arr[top];
+        return arr[top]; // Indicates the item that is at the top of the stack, the last item added.
     }
     
     public void display() {
-        if (isEmpty()) {
+        if (isEmpty()) { // First check if empty
         System.out.println("Storage is empty.");
         return;
     }
 
-        System.out.println("Food items in storage:");
+        System.out.println("Food items in storage:"); // Displays all items in the stack, along with their information.
 
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // allows changing the date format
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"); // allows changing the date format/hour
 
-        for (int i = 0; i <= top; i++) {
+        for (int i = 0; i <= top; i++) { // Iterate through the entire stack of the array from index 0 to the top.
             System.out.println("** " + arr[i].name + " **");
             System.out.println("  *Weight: " + arr[i].weight + " grams");
             System.out.println("  *Best-before: " + arr[i].bestBefore.format(dateFormatter));
@@ -204,24 +204,24 @@ public class CA1Algorithm {
     }
             
     public void search(String itemName) {
-        if (isEmpty()) {
+        if (isEmpty()) { // First check if empty
         System.out.println("Storage is empty.");
         return;
     }
 
-        for (int i = 0; i <= top; i++) {
+        for (int i = 0; i <= top; i++) { // Iterate through the entire stack of the array from index 0 to the top.
         if (arr[i].name.equalsIgnoreCase(itemName)) {
             System.out.println("Item found: " + arr[i].name);
             return;
         }
     }
 
-            System.out.println("Item not found.");
+            System.out.println("Item not found."); // If the item being searched for is not found in the array, the message is displayed.
     }
     }
 
     
-    public static int chooseStructure(Scanner input) {
+    public static int chooseStructure(Scanner input) { // Allows the user to select which type of structure they wish to use.
         int option = 0;
 
         while (option < 1 || option > 3) {
@@ -234,11 +234,11 @@ public class CA1Algorithm {
         try {
             option = Integer.parseInt(input.nextLine());
 
-            if (option < 1 || option > 3) {
+            if (option < 1 || option > 3) { // If you choose an option other than those available in the menu, a message will be displayed.
                 System.out.println("Invalid option. Choose 1 to 3.");
             }
 
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException e) { // If you enter an option that is not an integer, a message will be displayed.
             System.out.println("Invalid input. Enter a number.");
             option = 0;
         }
@@ -264,7 +264,7 @@ public class CA1Algorithm {
 
         int size = 0;
 
-        while (size <= 0 || size > 8) {
+        while (size <= 0 || size > 8) { // Allows the user to define the storage capacity, set between 1 and 8, according to CA.
             System.out.print("Enter storage capacity (1-8): ");
 
         try {
@@ -284,20 +284,21 @@ public class CA1Algorithm {
 
         FoodStack stack = null;
         FoodQueue queue = null;
-
-            if (structure == 1) {
+            // 
+            if (structure == 1) { 
             stack = new FoodStack(size);
             } else if (structure == 2) {
             queue = new FoodQueue(size);
         }
         
         int choose;
-        
+        // Main menu of the system where the user can add, remove, display and search for items.
+        // The information presented, as well as the operation of the system, is conditioned by the storage structure selected in the previous menu.
         do {
         System.out.println("Food Storage System");
             System.out.println("1. Add food");
             System.out.println("2. Remove food");
-            System.out.println("3. Peek first food");
+            System.out.println("3. Peek food");
             System.out.println("4. Display all food");
             System.out.println("5. Search food");
             System.out.println("6. Exit");
@@ -311,14 +312,14 @@ public class CA1Algorithm {
                 choose=0;
                 continue;
             }
-            
+         // All cases below will have their functionality affected according to the storage structure selected in the previous menu.   
         switch (choose) {
             case 1:
                 System.out.println("Enter food name: ");
                 String foodName = input.nextLine();
-                if (!foodName.matches("[a-zA-Z]+( [a-zA-Z]+)*")) {
+                if (!foodName.matches("[a-zA-Z]+( [a-zA-Z]+)*")) { // Allow only uppercase and lowercase letters and spaces.
                     System.out.println("Food name must contain lettes and space only.");
-                    break;
+                    break; // If a break is not added to the operation, execution does not stop at the corresponding block and continues executing the code for all subsequent cases (even if they do not match the condition) until a break is encountered.
                 }
                 
                 System.out.println("Enter food weight in grams: ");
@@ -326,13 +327,13 @@ public class CA1Algorithm {
                 try {
                     foodWeight = Double.parseDouble(input.nextLine());
                     
-                    if (foodWeight <= 0) {
+                    if (foodWeight <= 0) { // Allows onlu numbers greater than 0
                     System.out.println("Food weight must be greater than 0.");
                     break;
                 }
                 
                 
-                }catch (NumberFormatException e) {
+                }catch (NumberFormatException e) { // Display a message if the selected information is not a number.
                     System.out.println("Invalid weight. Enter a number.");
                     break;
                 }
@@ -344,25 +345,25 @@ public class CA1Algorithm {
                 
                 try {
                     bestBefore = LocalDate.parse(dateInput, formatter);
-                } catch (java.time.format.DateTimeParseException e) {
+                } catch (java.time.format.DateTimeParseException e) { // Display a message if the date is entered in a format other than the defined one.
                     System.out.println("Invalid date. Use DD/MM/YYYY.");
                     break;             
                 }
                 
-                LocalDate today = LocalDate.now();
-                LocalDate maxBestBefore = today.plusWeeks(2);
+                LocalDate today = LocalDate.now(); // Captures the current date.
+                LocalDate maxBestBefore = today.plusWeeks(2); // Adds two weeks to the current date.
                 
-                if (bestBefore.isBefore(today)) {
+                if (bestBefore.isBefore(today)) { // Prevents the user from entering a retroactive date.
                     System.out.println("Best before can not be in the past.");
                     break;
                 }
                 
-                if (bestBefore.isAfter(maxBestBefore)) {
+                if (bestBefore.isAfter(maxBestBefore)) { // Prevents the user from setting a validity period greater than two weeks.
                     System.out.println("Best before can not be more than two weeks.");
                     break;
                 }
                 
-                LocalDateTime placedTime = LocalDateTime.now();
+                LocalDateTime placedTime = LocalDateTime.now(); // Captures the current date and time
                 
                 FoodItem food = new FoodItem (foodName, foodWeight, bestBefore, placedTime);
                 
@@ -373,7 +374,7 @@ public class CA1Algorithm {
                 }
                 break;
                 
-            case 2:
+            case 2: // Remove item according to the selected structure.
                 if (structure == 1) {
                 stack.remove();
                 } else {
@@ -381,7 +382,7 @@ public class CA1Algorithm {
                 }
                 break;
                 
-            case 3:
+            case 3: // Select the item according to the selected structure.
                 if (structure == 1) {
                 FoodItem item = stack.peek();
 
@@ -393,7 +394,7 @@ public class CA1Algorithm {
                 }
                 break;
                 
-            case 4:
+            case 4: // Display all items according to the selected structure.
                 if (structure == 1) {
                 stack.display();
                 } else {
@@ -401,7 +402,7 @@ public class CA1Algorithm {
                 }
                 break;
                 
-            case 5:
+            case 5: // Search for the item according to the selected structure.
                 System.out.println("Enter food name to search");
                 String searchFood = input.nextLine();
 
@@ -412,15 +413,15 @@ public class CA1Algorithm {
                 }
                 break;
                 
-            case 6:
+            case 6: // Search for the item according to the selected structure.
                 System.out.println("Exit");
                 break;
                 
-            default: 
+            default: // Display a message if you choose an option other than those available in the menu.
                 System.out.println("Invalid Option! Choose 1 to 6");
         }
        
-        }   while  (choose != 6);
+        }   while  (choose != 6); // The loop is executed until the condition is true.
         
         input.close();
     }
