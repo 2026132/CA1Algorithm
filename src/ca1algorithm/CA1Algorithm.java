@@ -7,7 +7,7 @@ package ca1algorithm;
 import java.time.LocalDate; //package required to best before product expiration information.
 import java.time.LocalDateTime; //package required to storage date information.
 import java.time.format.DateTimeFormatter;// //package required to modify the date and time format.
-import java.util.Scanner;
+import java.util.Scanner; // Package required to read and capture input data in Java.
 
 
 public class CA1Algorithm { 
@@ -325,53 +325,66 @@ public class CA1Algorithm {
          // All cases below will have their functionality affected according to the storage structure selected in the previous menu.   
         switch (choose) {
             case 1:
+                String foodName;
+                while (true) {
                 System.out.println("Enter food name: ");
-                String foodName = input.nextLine();
-                if (!foodName.matches("[a-zA-Z]+( [a-zA-Z]+)*")) { // Allow only uppercase and lowercase letters and spaces.
+                foodName = input.nextLine();
+                if (foodName.matches("[a-zA-Z]+( [a-zA-Z]+)*")) { // Allow only uppercase and lowercase letters and spaces.
+                    break;
+                }
                     System.out.println("Food name must contain lettes and space only.");
-                    break; // If a break is not added to the operation, execution does not stop at the corresponding block and continues executing the code for all subsequent cases (even if they do not match the condition) until a break is encountered.
+                    // If a break is not added to the operation, execution does not stop at the corresponding block and continues executing the code for all subsequent cases (even if they do not match the condition) until a break is encountered.
                 }
                 
-                System.out.println("Enter food weight in grams: ");
                 double foodWeight;
+                while (true) {
+                System.out.println("Enter food weight in grams: ");
                 try {
                     foodWeight = Double.parseDouble(input.nextLine());
                     
                     if (foodWeight <= 0) { // Allows onlu numbers greater than 0
                     System.out.println("Food weight must be greater than 0.");
-                    break;
+                    continue;
                 }
-                
+                    break;
                 
                 }catch (NumberFormatException e) { // Display a message if the selected information is not a number.
                     System.out.println("Invalid weight. Enter a number.");
-                    break;
+                    
+                }
                 }
                 
-                System.out.println("Enter best before date (DD/MM/YYYY)");
-                String dateInput = input.nextLine();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                
                 LocalDate bestBefore;
-                
+                LocalDate today = LocalDate.now();
+                LocalDate maxBestBefore = today.plusWeeks(2);
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+
+                while (true) {
+                    System.out.println("Enter best before date (DD/MM/YYYY): ");
+                    String dateInput = input.nextLine();
+
                 try {
-                    bestBefore = LocalDate.parse(dateInput, formatter);
-                } catch (java.time.format.DateTimeParseException e) { // Display a message if the date is entered in a format other than the defined one.
+                     bestBefore = LocalDate.parse(dateInput, formatter);
+
+                if (bestBefore.isBefore(today)) {
+                    System.out.println("Best before cannot be in the past.");
+                    continue;
+                }
+
+                if (bestBefore.isAfter(maxBestBefore)) {
+                    System.out.println("Best before cannot be more than two weeks.");
+                    continue;
+                }
+
+                break;
+
+                } catch (java.time.format.DateTimeParseException e) {
                     System.out.println("Invalid date. Use DD/MM/YYYY.");
-                    break;             
                 }
-                
-                LocalDate today = LocalDate.now(); // Captures the current date.
-                LocalDate maxBestBefore = today.plusWeeks(2); // Adds two weeks to the current date.
-                
-                if (bestBefore.isBefore(today)) { // Prevents the user from entering a retroactive date.
-                    System.out.println("Best before can not be in the past.");
-                    break;
                 }
-                
-                if (bestBefore.isAfter(maxBestBefore)) { // Prevents the user from setting a validity period greater than two weeks.
-                    System.out.println("Best before can not be more than two weeks.");
-                    break;
-                }
+
                 
                 LocalDateTime placedTime = LocalDateTime.now(); // Captures the current date and time
                 
